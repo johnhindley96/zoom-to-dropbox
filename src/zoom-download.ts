@@ -52,32 +52,42 @@ const downloadMeetingVideos = async (meetingResponseBody, localFilePath) => {
     const id = meetingResponseBody.id;
 
     // For each video referenced in the meeting response
-    each(meetingResponseBody.recording_files, recording => {
-        const recordingType = recording.recording_type;
-        const fileExtension = recording.file_extension;
-        const downloadURL = recording.download_url;
+    await Promise.all(
+        meetingResponseBody.recording_files.map(async (recording) => {
+            const recordingType = recording.recording_type;
+            const fileExtension = recording.file_extension;
+            const downloadURL = recording.download_url;
 
-        // Meta info for each video
-        const zoomVideo: any = {};
+            // Meta info for each video
+            const zoomVideo: any = {};
 
-        zoomVideo.localFileName = cleanFileName(id + '-' + recordingType + '.' + fileExtension);
-        zoomVideo.downloadURL = downloadURL;
+            zoomVideo.localFileName = cleanFileName(id + '-' + recordingType + '.' + fileExtension);
+            zoomVideo.downloadURL = downloadURL;
 
-        console.log('downloading meeting video: ' + zoomVideo['localFileName']);
-        // Download video file from download url using 'got.stream'
-        const downloadStream = zoomUtility.got.stream(downloadURL, {
-            headers: {
-                Authorization: 'Bearer ' + zoomUtility.accessToken
-            }
-        });
-        const fileWriterStream = fs.createWriteStream(localFilePath + zoomVideo['localFileName']);
-        // Pipe video file to local storage location
-        downloadStream.pipe(fileWriterStream);
+            console.log('downloading meeting video: ' + zoomVideo['localFileName']);
+            // Download video file from download url using 'got.stream'
+            const downloadStream = zoomUtility.got.stream(downloadURL, {
+                headers: {
+                    Authorization: 'Bearer ' + zoomUtility.accessToken
+                }
+            });
+            const fileWriterStream = fs.createWriteStream(localFilePath + zoomVideo['localFileName']);
 
-        console.log('Download Completed: ' + zoomVideo['localFileName']);
+            const downloadFinished = writeStream => {
+                return new Promise((resolve, reject) => {
+                    writeStream.on('finish', function() {
+                        resolve('Download Completed: ' + zoomVideo['localFileName']);
+                    });
+                });
+            };
 
-        zoomVideos.push(zoomVideo);
-    });
+            // Pipe video file to local storage location
+            downloadStream.pipe(fileWriterStream);
+            console.log(await downloadFinished(fileWriterStream));
+
+            zoomVideos.push(zoomVideo);
+        })
+    );
 
     console.log('finished downloading meeting videos');
 
