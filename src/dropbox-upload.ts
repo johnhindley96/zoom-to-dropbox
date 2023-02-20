@@ -3,7 +3,6 @@
 import { Dropbox } from 'dropbox';
 import path = require('path');
 import fs = require('fs');
-import each from 'async/each';
 
 // Declare and initialise dropbox javascript api object with oauth authentication parameters
 const dbx = new Dropbox({

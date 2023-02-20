@@ -1,6 +1,5 @@
 // Zoom download module to handle downloading of zoom meetings to local temporary location
 
-import each from 'async/each';
 const fs = require('fs');
 
 // Module scoped ZoomUtility variable, uninitialised
