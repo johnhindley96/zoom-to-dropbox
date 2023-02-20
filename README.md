@@ -44,3 +44,25 @@ https://www.dropbox.com/oauth2/authorize?client_id=<APP_KEY>&token_access_type=o
     ```
     tmpDownloadLocation=<TEMP_LOCATION e.g. /tmp>
     ```
+
+## Development Environemt
+1. Install ngrok to provide a public url to your server
+2. Start ngrok on port 8080 in a terminal
+    ```
+    ngrok http 8080
+    ```
+3. Copy the 'forwarding' url provided by the ngrok UI, and apply it as the redirect url, as referenced in the Zoom API setup guide above 
+4. Clone this repository locally
+5. In repository root, run build
+    ```
+    npm run gcp-build
+   ```
+6. Run server
+    ```
+    npx functions-framework --target=downloadZoom
+    ```
+7. Open a browser and enter the following URL, where NGROK_URL is the forwarding URL obtained above, and <MEETING_ID> is the zoom meeting ID of the meeting you wish to transfer
+    ```
+    https://<NGROK_URL>?state=<MEETING_ID>
+    ```
+8. Check relevant location in your Dropbox account to confirm files have been transferred
