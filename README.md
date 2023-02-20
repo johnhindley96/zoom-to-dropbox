@@ -3,6 +3,7 @@
 1. Uses zoom client-server oauth mechanism. Rewrite with server-server JWT for optimal results
 2. Database implementation
 3. Provide more granular error handling
+4. Test with access to GCP Cloud Function test environment
 ## Setup
 ### Zoom API integration
 1. Create a new OAuth zoom app on the desired account at: https://marketplace.zoom.us/develop/create
