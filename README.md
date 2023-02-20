@@ -1,10 +1,10 @@
-#zoom-to-dropbox
-##TODO
+# zoom-to-dropbox
+## TODO
 1. Uses zoom client-server oauth mechanism. Rewrite with server-server JWT for optimal results
 2. Database implementation
 3. Provide more granular error handling
-##Setup
-###Zoom API integration
+## Setup
+### Zoom API integration
 1. Create a new OAuth zoom app on the desired account at: https://marketplace.zoom.us/develop/create
 2. select user-managed, and don't publish
 3. Under 'Redirect URL for OAuth' and 'Add allow lists', add a public URL which points to this function
@@ -17,7 +17,7 @@
 5. Add all scopes under "Recording" to the new zoom app created above
 6. complete other required information for the zoom app above
 
-###Dropbox API integration
+### Dropbox API integration
 1. Create New Dropbox App on the desired account at: https://www.dropbox.com/developers/apps/create?_tk=pilot_lp&_ad=ctabtn1&_camp=create
 2. Give the app scope to access a single app specific folder
 3. Give the app all file related permissions
@@ -38,7 +38,7 @@ https://www.dropbox.com/oauth2/authorize?client_id=<APP_KEY>&token_access_type=o
     dropboxRefreshToken=<REFRESH_TOKEN as generated above>
     ```
 
-###General Setup
+### General Setup
 1. Add temporary download location to environment variables of node container:
     ```
     tmpDownloadLocation=<TEMP_LOCATION e.g. /tmp>
